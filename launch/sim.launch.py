@@ -36,11 +36,11 @@ def generate_launch_description():
         description="Path to rviz config file",
     )
 
-    model = os.path.join(pkg_path, "models", "tugbot", "model.sdf")
+    model = os.path.join(pkg_path, "models", "tugbot_rviz", "model.sdf")
 
     with open(model, "r") as infp:
         robot_desc = infp.read().replace(
-            "<uri>", f"<uri>package://{package_name}/models/tugbot/"
+            "<uri>", f"<uri>package://{package_name}/models/tugbot_rviz/"
         )
 
     # Gazebo launch
@@ -49,7 +49,7 @@ def generate_launch_description():
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py"),
         ),
         launch_arguments={
-            "gz_args": f"-r \"/ros2_ws/src/Gazebo-Garden-Simulation/models/pool/multi_lrauv_race.sdf\""
+            "gz_args": f"-r \"/ros2_ws/src/Gazebo-Garden-Simulation/models/tugbot_warehouse/tugbot_warehouse.sdf\""
         }.items(),
     )
 
@@ -66,7 +66,12 @@ def generate_launch_description():
         name="tugbot_bridge",
         parameters=[{"use_sim_time": True}],
         arguments=[
+            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
             "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+            "/model/tugbot/battery/linear_battery/state@sensor_msgs/msg/BatteryState[gz.msgs.BatteryState",
             "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
             "/model/tugbot/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             "/model/tugbot/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
@@ -77,9 +82,26 @@ def generate_launch_description():
         ],
         remappings=[
             (
+                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info",
+                "camera_front/camera_info",
+            ),
+            (
+                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image",
+                "camera_front/image",
+            ),
+            (
+                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info",
+                "camera_front/depth/camera_info",
+            ),
+            (
+                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image",
+                "camera_front/depth/image",
+            ),
+            (
                 "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points",
                 "camera_front/depth/points",
             ),
+            ("/model/tugbot/battery/linear_battery/state", "battery_state"),
             ("/model/tugbot/odometry", "odom"),
             ("/model/tugbot/cmd_vel", "cmd_vel"),
             (
@@ -131,7 +153,7 @@ def generate_launch_description():
                 "scan_omni", "tugbot/scan_omni/scan_omni"
             ),
             generate_static_tf_publisher_node(
-                "gripper", "tugbot/gripper/sensor_contact"
+                "camera_front", "tugbot/camera_front/color"
             ),
             generate_static_tf_publisher_node(
                 "camera_front", "tugbot/camera_front/depth"
