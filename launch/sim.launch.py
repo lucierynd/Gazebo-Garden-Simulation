@@ -49,7 +49,7 @@ def generate_launch_description():
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py"),
         ),
         launch_arguments={
-            "gz_args": f"-r 'https://fuel.gazebosim.org/1.0/OpenRobotics/worlds/Tugbot%20in%20Warehouse'"
+            "gz_args": f"-r \"/ros2_ws/src/Gazebo-Garden-Simulation/models/pool/multi_lrauv_race.sdf\""
         }.items(),
     )
 
@@ -66,23 +66,10 @@ def generate_launch_description():
         name="tugbot_bridge",
         parameters=[{"use_sim_time": True}],
         arguments=[
-            "/world/world_demo/model/tugbot/link/camera_back/sensor/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_back/sensor/color/image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/depth_image/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
             "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
-            "/model/tugbot/battery/linear_battery/state@sensor_msgs/msg/BatteryState[gz.msgs.BatteryState",
             "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
             "/model/tugbot/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
             "/model/tugbot/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            "/world/world_demo/model/tugbot/link/gripper/sensor/sensor_contact/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-            "/world/world_demo/model/tugbot/link/scan_back/sensor/scan_back/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-            "/world/world_demo/model/tugbot/link/scan_front/sensor/scan_front/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
             "/world/world_demo/model/tugbot/link/scan_omni/sensor/scan_omni/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
             "/world/world_demo/model/tugbot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model",
             "/model/tugbot/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
@@ -90,63 +77,14 @@ def generate_launch_description():
         ],
         remappings=[
             (
-                "/world/world_demo/model/tugbot/link/camera_back/sensor/color/camera_info",
-                "camera_back/camera_info",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_back/sensor/color/image",
-                "camera_back/image",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/camera_info",
-                "camera_back/depth/camera_info",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/depth_image",
-                "camera_back/depth/image",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_back/sensor/depth/depth_image/points",
-                "camera_back/depth/points",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info",
-                "camera_front/camera_info",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image",
-                "camera_front/image",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info",
-                "camera_front/depth/camera_info",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image",
-                "camera_front/depth/image",
-            ),
-            (
                 "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points",
                 "camera_front/depth/points",
             ),
-            ("/model/tugbot/battery/linear_battery/state", "battery_state"),
             ("/model/tugbot/odometry", "odom"),
             ("/model/tugbot/cmd_vel", "cmd_vel"),
             (
                 "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu",
                 "imu",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/scan_back/sensor/scan_back/scan",
-                "scan_back",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/scan_front/sensor/scan_front/scan",
-                "scan_front",
-            ),
-            (
-                "/world/world_demo/model/tugbot/link/gripper/sensor/sensor_contact/scan",
-                "scan_contact",
             ),
             (
                 "/world/world_demo/model/tugbot/link/scan_omni/sensor/scan_omni/scan",
@@ -190,25 +128,10 @@ def generate_launch_description():
             robotState,
             delayedNodes,
             generate_static_tf_publisher_node(
-                "scan_back", "tugbot/scan_back/scan_back"
-            ),
-            generate_static_tf_publisher_node(
-                "scan_front", "tugbot/scan_front/scan_front"
-            ),
-            generate_static_tf_publisher_node(
                 "scan_omni", "tugbot/scan_omni/scan_omni"
             ),
             generate_static_tf_publisher_node(
                 "gripper", "tugbot/gripper/sensor_contact"
-            ),
-            generate_static_tf_publisher_node(
-                "camera_back", "tugbot/camera_back/color"
-            ),
-            generate_static_tf_publisher_node(
-                "camera_back", "tugbot/camera_back/depth"
-            ),
-            generate_static_tf_publisher_node(
-                "camera_front", "tugbot/camera_front/color"
             ),
             generate_static_tf_publisher_node(
                 "camera_front", "tugbot/camera_front/depth"
