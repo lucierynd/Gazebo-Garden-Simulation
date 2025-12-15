@@ -19,7 +19,7 @@ public:
             std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
         subscription_ = this->create_subscription<geometry_msgs::msg::TransformStamped>(
-            "/tugbot/pose", 10,
+            "/model/tugbot/pose", 10,
             std::bind(&FramePublisher::handle_turtle_pose, this, std::placeholders::_1));
     }
 

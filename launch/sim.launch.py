@@ -99,22 +99,20 @@ def generate_launch_description():
             ),
             (
                 "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points",
-                "camera_front/depth/points",
+                "scan_3D",
             ),
             ("/model/tugbot/battery/linear_battery/state", "battery_state"),
             ("/model/tugbot/odometry", "odom"),
             ("/model/tugbot/cmd_vel", "cmd_vel"),
             (
                 "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu",
-                "imu",
+                "imu/data",
             ),
             (
                 "/world/world_demo/model/tugbot/link/scan_omni/sensor/scan_omni/scan",
                 "scan",
             ),
             ("/world/world_demo/model/tugbot/joint_state", "joint_states"),
-            ("/model/tugbot/tf", "/tf"),
-            ("/model/tugbot/pose", "/tugbot/pose"),
         ],
         output="screen",
     )
@@ -122,13 +120,6 @@ def generate_launch_description():
     delayedNodes = TimerAction(
         period=2.5,
         actions=[rviz, bridge],
-    )
-
-    poseBroadcaster = Node(
-        package=package_name,
-        executable="tugbot_tf2_broadcaster",
-        name="pose_broadcaster",
-        parameters=[{"use_sim_time": True}],
     )
 
     robotState = Node(
@@ -142,11 +133,22 @@ def generate_launch_description():
         ],
     )
 
+    # RF2O Node
+    rf2o = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('rf2o_laser_odometry'),'launch','rf2o_laser_odometry.launch.py')])
+    )
+
+    # EKF Node
+    ekf = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('ancle_pkg'),'launch','ekf_launch.py')])
+    )
+
     return LaunchDescription(
         [
             rviz_config_arg,
             gazebo,
-            poseBroadcaster,
             robotState,
             delayedNodes,
             generate_static_tf_publisher_node(
@@ -158,5 +160,7 @@ def generate_launch_description():
             generate_static_tf_publisher_node(
                 "camera_front", "tugbot/camera_front/depth"
             ),
+            rf2o,
+            #ekf
         ]
     )
