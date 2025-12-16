@@ -142,13 +142,13 @@ def generate_launch_description():
     # RF2O Node - Lidar only odometry without TF publishing
     rf2o = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('ancle_pkg'),'launch','rf2o_no_tf_launch.py')])
+                    get_package_share_directory('gazebo_garden_simulation_example'),'launch','rf2o_no_tf_launch.py')])
     )
 
     # EKF Node
     ekf = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('ancle_pkg'),'launch','ekf_launch.py')])
+                    get_package_share_directory('gazebo_garden_simulation_example'),'launch','ekf_launch.py')])
     )
 
     return LaunchDescription(
