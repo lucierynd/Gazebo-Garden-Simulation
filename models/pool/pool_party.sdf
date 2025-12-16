@@ -1,11 +1,9 @@
 <?xml version='1.0' encoding='ASCII'?>
 <sdf version='1.7'>
   <world name='world_demo'>
-    <gravity>0 0 -9.8</gravity>
-    <physics type='ode'>
-      <max_step_size>0.01</max_step_size>
-      <real_time_factor>1</real_time_factor>
-      <max_contacts>10</max_contacts>
+    <physics name="1ms" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
     </physics>
     <plugin name='ignition::gazebo::systems::Physics' filename='libignition-gazebo-physics-system.so'/>
     <plugin name='ignition::gazebo::systems::UserCommands' filename='libignition-gazebo-user-commands-system.so'/>
@@ -13,6 +11,16 @@
     <plugin name='ignition::gazebo::systems::Imu' filename='ignition-gazebo-imu-system'/>
     <plugin name='ignition::gazebo::systems::Sensors' filename='ignition-gazebo-sensors-system'>
       <render_engine>ogre2</render_engine>
+    </plugin>
+    <!-- Water plugins -->
+    <plugin
+      filename="ignition-gazebo-buoyancy-system"
+      name="ignition::gazebo::systems::Buoyancy">
+      <uniform_fluid_density>1000</uniform_fluid_density>
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-particle-emitter2-system"
+      name="ignition::gazebo::systems::ParticleEmitter2">
     </plugin>
 
     <gui fullscreen="0">
@@ -129,16 +137,18 @@
               <property key="state" type="string">docked_collapsed</property>
           </ignition-gui>
       </plugin>
-      <plugin filename="Teleop" name="Teleop">
-          <ignition-gui>
-              <property key="x" type="double">0</property>
-              <property key="y" type="double">0</property>
-              <property key="width" type="double">400</property>
-              <property key="height" type="double">900</property>
-              <property key="state" type="string">docked</property>
-          </ignition-gui>
-          <topic>/model/tugbot/cmd_vel</topic>
+      <plugin filename="KeyPublisher" name="Key publisher">
+        <ignition-gui>
+          <property type="bool" key="showTitleBar">false</property>
+          <property key="x" type="double">450</property>
+          <property key="y" type="double">0</property>
+          <property key="width" type="double">200</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="cardBackground" type="string">#666666</property>
+        </ignition-gui>
       </plugin>
+
     </gui>
 
     <scene>
@@ -188,29 +198,186 @@
 
     <!-- Tugbot -->
 
-    <include>
+    <!-- <include>
       <uri>
         /ros2_ws/src/Gazebo-Garden-Simulation/models/tugbot_gazebo
       </uri>
       <name>tugbot</name>
       <pose>2 0 0.1 0 0 0</pose>
-    </include>
+    </include> -->
 
-    <!-- Obstacles -->
-    <!-- <include>
-      <uri>
-        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Vessel E
-      </uri>
-      <name>vessel</name>
-      <pose>-9.34177 -13.5598 0 0 -0 0</pose>
-    </include>
+    <!-- Thetys AUV -->
+
     <include>
       <uri>
-        /ros2_ws/src/Gazebo-Garden-Simulation/models/long_rock
+        /ros2_ws/src/Gazebo-Garden-Simulation/models/thetys_auv
       </uri>
-      <name>rock_1</name>
-      <pose>-4.41528 -0.690987 0 0 -0 0</pose>
-    </include> -->
+      <name>thetys_auv</name>
+      <pose>2 0 10 0 0 0</pose>
+      
+      <!-- Lift and drag -->
+
+      <!-- Vertical fin -->
+      <plugin
+        filename="ignition-gazebo-lift-drag-system"
+        name="ignition::gazebo::systems::LiftDrag">
+        <air_density>1000</air_density>
+        <cla>4.13</cla>
+        <cla_stall>-1.1</cla_stall>
+        <cda>0.2</cda>
+        <cda_stall>0.03</cda_stall>
+        <alpha_stall>0.17</alpha_stall>
+        <a0>0</a0>
+        <area>0.0244</area>
+        <upward>0 1 0</upward>
+        <forward>1 0 0</forward>
+        <link_name>vertical_fins</link_name>
+        <cp>0 0 0</cp>
+      </plugin>
+
+      <!-- Horizontal fin -->
+      <plugin
+        filename="ignition-gazebo-lift-drag-system"
+        name="ignition::gazebo::systems::LiftDrag">
+        <air_density>1000</air_density>
+        <cla>4.13</cla>
+        <cla_stall>-1.1</cla_stall>
+        <cda>0.2</cda>
+        <cda_stall>0.03</cda_stall>
+        <alpha_stall>0.17</alpha_stall>
+        <a0>0</a0>
+        <area>0.0244</area>
+        <upward>0 0 1</upward>
+        <forward>1 0 0</forward>
+        <link_name>horizontal_fins</link_name>
+        <cp>0 0 0</cp>
+      </plugin>
+
+      <plugin
+        filename="ignition-gazebo-hydrodynamics-system"
+        name="ignition::gazebo::systems::Hydrodynamics">
+        <link_name>base_link</link_name>
+        <xDotU>-4.876161</xDotU>
+        <yDotV>-126.324739</yDotV>
+        <zDotW>-126.324739</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>-33.46</mDotQ>
+        <nDotR>-33.46</nDotR>
+        <xUU>-6.2282</xUU>
+        <xU>0</xU>
+        <yVV>-601.27</yVV>
+        <yV>0</yV>
+        <zWW>-601.27</zWW>
+        <zW>0</zW>
+        <kPP>-0.1916</kPP>
+        <kP>0</kP>
+        <mQQ>-632.698957</mQQ>
+        <mQ>0</mQ>
+        <nRR>-632.698957</nRR>
+        <nR>0</nR>
+      </plugin>
+
+      <!-- Control AUV -->
+
+      <!-- Forward thrust control -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">87</match> <!-- W arrow key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+              data: -50.0
+          </output>
+      </plugin>
+
+      <!-- Backward thrust control -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">88</match> <!-- X key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+              data: 50.0
+          </output>
+      </plugin>
+
+      <!-- Stop thrust control -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">83</match> <!-- S key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+              data: 0.0
+          </output>
+      </plugin>
+
+
+      <!-- Turn left (vertical fin) -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">65</match> <!-- A key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+              data: 0.2
+          </output>
+      </plugin>
+
+      <!-- Turn right (vertical fin) -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">68</match> <!-- D key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+              data: -0.2
+          </output>
+      </plugin>
+
+      <!-- Dive (horizontal fin down) -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">16777237</match> <!-- Down arrow key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+              data: 0.2
+          </output>
+      </plugin>
+
+      <!-- Ascend (horizontal fin up) -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">16777235</match> <!-- Up arrow key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+              data: -0.2
+          </output>
+      </plugin>
+
+      <!-- Center fins -->
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">16777236</match> <!-- Right arrow key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+              data: 0.0
+          </output>
+      </plugin>
+
+      <plugin filename="ignition-gazebo-triggered-publisher-system"
+              name="ignition::gazebo::systems::TriggeredPublisher">
+          <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
+              <match field="data">16777234</match> <!-- Left arrow key -->
+          </input>
+          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+              data: 0.0
+          </output>
+      </plugin>
+    </include>
 
   </world>
 </sdf>
