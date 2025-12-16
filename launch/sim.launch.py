@@ -1,12 +1,11 @@
 import os
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     IncludeLaunchDescription,
     TimerAction,
+    DeclareLaunchArgument
 )
-from launch.actions import DeclareLaunchArgument, TimerAction
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -49,7 +48,7 @@ def generate_launch_description():
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py"),
         ),
         launch_arguments={
-            "gz_args": f"-r \"/ros2_ws/src/Gazebo-Garden-Simulation/models/tugbot_warehouse/tugbot_warehouse.sdf\""
+            "gz_args": f"-r \"/ros2_ws/src/Gazebo-Garden-Simulation/models/pool/pool_party.sdf\""
         }.items(),
     )
 
@@ -79,6 +78,7 @@ def generate_launch_description():
             "/world/world_demo/model/tugbot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model",
             "/model/tugbot/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
             "/model/tugbot/pose@geometry_msgs/msg/TransformStamped[gz.msgs.Pose",
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
         ],
         remappings=[
             (
@@ -133,10 +133,16 @@ def generate_launch_description():
         ],
     )
 
-    # RF2O Node
+    # RF2O Node - Lidar only odometry
+    # rf2o = IncludeLaunchDescription(
+    #             PythonLaunchDescriptionSource([os.path.join(
+    #                 get_package_share_directory('rf2o_laser_odometry'),'launch','rf2o_laser_odometry.launch.py')])
+    # )
+
+    # RF2O Node - Lidar only odometry without TF publishing
     rf2o = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('rf2o_laser_odometry'),'launch','rf2o_laser_odometry.launch.py')])
+                    get_package_share_directory('ancle_pkg'),'launch','rf2o_no_tf_launch.py')])
     )
 
     # EKF Node
@@ -160,7 +166,10 @@ def generate_launch_description():
             generate_static_tf_publisher_node(
                 "camera_front", "tugbot/camera_front/depth"
             ),
+            generate_static_tf_publisher_node(
+                "imu_link", "tugbot/imu_link/imu"
+            ),
             rf2o,
-            #ekf
+            ekf
         ]
     )
