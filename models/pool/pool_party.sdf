@@ -183,12 +183,22 @@
 
     <!-- Tethys AUV -->
 
-    <include>
+    <!-- <include>
       <uri>
         /ros2_ws/src/Gazebo-Garden-Simulation/models/tethys_auv
       </uri>
       <name>tethys_auv</name>
       <pose>2 0 1.5 0 0 0</pose>
+    </include> -->
+
+    <!-- ROV -->
+
+    <include>
+      <uri>
+        /ros2_ws/src/Gazebo-Garden-Simulation/models/BlueRov2
+      </uri>
+      <name>rov</name>
+      <pose>2 0 0 0 0 0</pose>
     </include>
 
   </world>
