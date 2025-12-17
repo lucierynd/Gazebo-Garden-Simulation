@@ -206,13 +206,13 @@
       <pose>2 0 0.1 0 0 0</pose>
     </include> -->
 
-    <!-- Thetys AUV -->
+    <!-- Tethys AUV -->
 
     <include>
       <uri>
-        /ros2_ws/src/Gazebo-Garden-Simulation/models/thetys_auv
+        /ros2_ws/src/Gazebo-Garden-Simulation/models/tethys_auv
       </uri>
-      <name>thetys_auv</name>
+      <name>tethys_auv</name>
       <pose>2 0 10 0 0 0</pose>
       
       <!-- Lift and drag -->
@@ -285,7 +285,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">87</match> <!-- W arrow key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/propeller_joint_1/cmd_thrust">
               data: -50.0
           </output>
       </plugin>
@@ -296,7 +296,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">88</match> <!-- X key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/propeller_joint_1/cmd_thrust">
               data: 50.0
           </output>
       </plugin>
@@ -307,7 +307,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">83</match> <!-- S key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/propeller_joint_1/cmd_thrust">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/propeller_joint_1/cmd_thrust">
               data: 0.0
           </output>
       </plugin>
@@ -319,7 +319,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">65</match> <!-- A key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/vertical_fins_joint/0/cmd_pos">
               data: 0.2
           </output>
       </plugin>
@@ -330,7 +330,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">68</match> <!-- D key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/vertical_fins_joint/0/cmd_pos">
               data: -0.2
           </output>
       </plugin>
@@ -341,7 +341,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">16777237</match> <!-- Down arrow key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/horizontal_fins_joint/0/cmd_pos">
               data: 0.2
           </output>
       </plugin>
@@ -352,7 +352,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">16777235</match> <!-- Up arrow key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/horizontal_fins_joint/0/cmd_pos">
               data: -0.2
           </output>
       </plugin>
@@ -363,7 +363,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">16777236</match> <!-- Right arrow key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/horizontal_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/horizontal_fins_joint/0/cmd_pos">
               data: 0.0
           </output>
       </plugin>
@@ -373,7 +373,7 @@
           <input type="ignition.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">16777234</match> <!-- Left arrow key -->
           </input>
-          <output type="ignition.msgs.Double" topic="/model/thetys_auv/joint/vertical_fins_joint/0/cmd_pos">
+          <output type="ignition.msgs.Double" topic="/model/tethys_auv/joint/vertical_fins_joint/0/cmd_pos">
               data: 0.0
           </output>
       </plugin>
