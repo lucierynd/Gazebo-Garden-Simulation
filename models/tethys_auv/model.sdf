@@ -326,7 +326,7 @@
         <cp>0 0 0</cp>
       </plugin>
 
-      <plugin
+      <!-- <plugin
         filename="ignition-gazebo-hydrodynamics-system"
         name="ignition::gazebo::systems::Hydrodynamics">
         <link_name>base_link</link_name>
@@ -348,7 +348,7 @@
         <mQ>0</mQ>
         <nRR>-632.698957</nRR>
         <nR>0</nR>
-      </plugin>
+      </plugin> -->
 
       <!-- Control AUV -->
 
