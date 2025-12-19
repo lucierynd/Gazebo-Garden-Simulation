@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='ASCII'?>
 <sdf version='1.7'>
   <world name='world_demo'>
+    <gravity>0 0 -9.8</gravity>
     <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -184,10 +185,10 @@
 
     <include>
       <uri>
-        /ros2_ws/src/Gazebo-Garden-Simulation/models/tethys_auv
+        /ros2_ws/src/Gazebo-Garden-Simulation/models/tethys_gazebo
       </uri>
-      <name>tethys_auv</name>
-      <pose>13.9 -10.6 10 0 0 0</pose>
+      <name>tethys</name>
+      <pose>13.9 -10.6 2 0 0 0</pose>
     </include>
 
   </world>

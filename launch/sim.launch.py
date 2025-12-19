@@ -35,11 +35,11 @@ def generate_launch_description():
         description="Path to rviz config file",
     )
 
-    model = os.path.join(pkg_path, "models", "tugbot_rviz", "model.sdf")
+    model = os.path.join(pkg_path, "models", "tethys_rviz", "model.sdf")
 
     with open(model, "r") as infp:
         robot_desc = infp.read().replace(
-            "<uri>", f"<uri>package://{package_name}/models/tugbot_rviz/"
+            "<uri>", f"<uri>package://{package_name}/models/tethys_rviz/"
         )
 
     # Gazebo launch
@@ -62,57 +62,55 @@ def generate_launch_description():
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        name="tugbot_bridge",
+        name="tethys_bridge",
         parameters=[{"use_sim_time": True}],
         arguments=[
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
-            "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
-            "/model/tugbot/battery/linear_battery/state@sensor_msgs/msg/BatteryState[gz.msgs.BatteryState",
-            "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
-            "/model/tugbot/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            "/model/tugbot/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            "/world/world_demo/model/tugbot/link/scan_omni/sensor/scan_omni/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-            "/world/world_demo/model/tugbot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model",
-            "/model/tugbot/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
-            "/model/tugbot/pose@geometry_msgs/msg/TransformStamped[gz.msgs.Pose",
+            "/world/world_demo/model/tethys/link/camera_front/sensor/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/world/world_demo/model/tethys/link/camera_front/sensor/color/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/world/world_demo/model/tethys/link/camera_front/sensor/depth/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            "/world/world_demo/model/tethys/link/camera_front/sensor/depth/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/world/world_demo/model/tethys/link/camera_front/sensor/depth/depth_image/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+            "/world/world_demo/model/tethys/link/imu_link/sensor/imu/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            "/model/tethys/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            "/model/tethys/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            "/world/world_demo/model/tethys/link/scan_omni/sensor/scan_omni/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            "/world/world_demo/model/tethys/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model",
+            "/model/tethys/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+            "/model/tethys/pose@geometry_msgs/msg/TransformStamped[gz.msgs.Pose",
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
         ],
         remappings=[
             (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/camera_info",
+                "/world/world_demo/model/tethys/link/camera_front/sensor/color/camera_info",
                 "camera_front/camera_info",
             ),
             (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/color/image",
+                "/world/world_demo/model/tethys/link/camera_front/sensor/color/image",
                 "camera_front/image",
             ),
             (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/camera_info",
+                "/world/world_demo/model/tethys/link/camera_front/sensor/depth/camera_info",
                 "camera_front/depth/camera_info",
             ),
             (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image",
+                "/world/world_demo/model/tethys/link/camera_front/sensor/depth/depth_image",
                 "camera_front/depth/image",
             ),
             (
-                "/world/world_demo/model/tugbot/link/camera_front/sensor/depth/depth_image/points",
+                "/world/world_demo/model/tethys/link/camera_front/sensor/depth/depth_image/points",
                 "scan_3D",
             ),
-            ("/model/tugbot/battery/linear_battery/state", "battery_state"),
-            ("/model/tugbot/odometry", "odom"),
-            ("/model/tugbot/cmd_vel", "cmd_vel"),
+            ("/model/tethys/odometry", "odom"),
+            ("/model/tethys/cmd_vel", "cmd_vel"),
             (
-                "/world/world_demo/model/tugbot/link/imu_link/sensor/imu/imu",
+                "/world/world_demo/model/tethys/link/imu_link/sensor/imu/imu",
                 "imu/data",
             ),
             (
-                "/world/world_demo/model/tugbot/link/scan_omni/sensor/scan_omni/scan",
+                "/world/world_demo/model/tethys/link/scan_omni/sensor/scan_omni/scan",
                 "scan",
             ),
-            ("/world/world_demo/model/tugbot/joint_state", "joint_states"),
+            ("/world/world_demo/model/tethys/joint_state", "joint_states"),
         ],
         output="screen",
     )
@@ -134,22 +132,23 @@ def generate_launch_description():
     )
 
     # RF2O Node - Lidar only odometry
-    # rf2o = IncludeLaunchDescription(
-    #             PythonLaunchDescriptionSource([os.path.join(
-    #                 get_package_share_directory('rf2o_laser_odometry'),'launch','rf2o_laser_odometry.launch.py')])
-    # )
-
-    # RF2O Node - Lidar only odometry without TF publishing
     rf2o = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_garden_simulation_example'),'launch','rf2o_no_tf_launch.py')])
+                    get_package_share_directory('rf2o_laser_odometry'),'launch','rf2o_laser_odometry.launch.py')])
     )
 
-    # EKF Node
-    ekf = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_garden_simulation_example'),'launch','ekf_launch.py')])
-    )
+    # IMU + lidar odometry without TF publishing
+    # # RF2O Node - Lidar only odometry without TF publishing
+    # rf2o = IncludeLaunchDescription(
+    #             PythonLaunchDescriptionSource([os.path.join(
+    #                 get_package_share_directory('gazebo_garden_simulation_example'),'launch','rf2o_no_tf_launch.py')])
+    # )
+
+    # # EKF Node
+    # ekf = IncludeLaunchDescription(
+    #             PythonLaunchDescriptionSource([os.path.join(
+    #                 get_package_share_directory('gazebo_garden_simulation_example'),'launch','ekf_launch.py')])
+    # )
 
     return LaunchDescription(
         [
@@ -158,18 +157,18 @@ def generate_launch_description():
             robotState,
             delayedNodes,
             generate_static_tf_publisher_node(
-                "scan_omni", "tugbot/scan_omni/scan_omni"
+                "scan_omni", "tethys/scan_omni/scan_omni"
             ),
             generate_static_tf_publisher_node(
-                "camera_front", "tugbot/camera_front/color"
+                "camera_front", "tethys/camera_front/color"
             ),
             generate_static_tf_publisher_node(
-                "camera_front", "tugbot/camera_front/depth"
+                "camera_front", "tethys/camera_front/depth"
             ),
             generate_static_tf_publisher_node(
-                "imu_link", "tugbot/imu_link/imu"
+                "imu_link", "tethys/imu_link/imu"
             ),
             rf2o,
-            ekf
+            # ekf
         ]
     )
